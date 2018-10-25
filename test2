@@ -1,0 +1,513 @@
+#!/bin/bash
+
+i=1
+
+clear
+## TEST REGULAR GRAPH ##
+echo -e "V:V1\nV:V2\nV:V3\nE:V1,V2,2\nE:V1,V3,7\nE:V2,V3,3" > mygraph
+
+#TEST 1bfs#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -bfs V1 V3 2> tmpfile
+echo "Expected: V1,V3"
+
+grep -q "All heap blocks were freed"  tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 1dfs#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -dfs V1 2> tmpfile
+echo "Expected: V1,V2,V3"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 1dijkstra#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -dijkstra V1 V3 2> tmpfile
+echo "Expected: V1,V2,V3"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 4#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -bfs TTTT V3 2> tmpfile
+echo "Expected: Exception: Vertice TTTT undefined"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let i=$i+1
+
+echo ""
+#TEST 5#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -TTTT V1 V3 2> tmpfile
+echo "Expected: Invalid search type"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let i=$i+1
+
+echo ""
+#TEST 6#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -TTTT -bfs V1 V3 2> tmpfile
+echo "Expected: Invalid Parameter Syntax"
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let i=$i+1
+
+echo ""
+#TEST 7#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -bfs V1 TTTT 2> tmpfile
+echo "Expected: Exception: Vertice TTTT undefined"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 8#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -bfs V1 V3 -m 7 2> tmpfile
+echo "Expected: Exception: Out of Memory"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+
+## TEST REGULAR GRAPH ##
+
+echo -e "V:A\nV:B\nV:C\nV:D\nV:E\nV:F\nV:G\nE:A,B,100\nE:A,E,50\nE:A,C,2\nE:B,E,10\nE:E,C,20\nE:C,D,20\nE:D,F,20\nE:F,B,10" > mygraph
+
+echo ""
+#TEST 9#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -bfs F F 2> tmpfile
+echo "Expected: F"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 10#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -bfs A E 2> tmpfile
+echo "Expected: A,E"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 11#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -bfs A B 2> tmpfile
+echo "Expected: A,B"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 12#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -bfs A F 2> tmpfile
+echo "Expected: A,C,D,F"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 13#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -bfs B F 2> tmpfile
+echo "Expected: B,E,C,D,F"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 14#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -bfs D C 2> tmpfile
+echo "Expected: D,F,B,E,C"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 15#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -bfs E G 2> tmpfile
+echo "Expected: No path message"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 16#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -bfs G D 2> tmpfile
+echo "Expected: No path message"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 17#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -dijkstra F F 2> tmpfile
+echo "Expected: F"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 18#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -dijkstra A E 2> tmpfile
+echo "Expected: A,E"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 19#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -dijkstra A B 2> tmpfile
+echo "Expected: A,C,D,F,B"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 20#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -dijkstra A F 2> tmpfile
+echo "Expected: A,C,D,F"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 21#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -dijkstra B F 2> tmpfile
+echo "Expected: B,E,C,D,F"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 22#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -dijkstra E G 2> tmpfile
+echo "Expected: no path message"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 23#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -dijkstra G D 2> tmpfile
+echo "Expected: no path message"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 24#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -dijkstra G D 2> tmpfile
+echo "Expected: no path message"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo -e "V:A\nV:B\nV:C\nV:D\nV:E\nV:F\nE:A,B,100\nE:A,E,50\nE:A,C,2\nE:B,E,10\nE:C,D,20\nE:D,F,20\nE:F,B,10" > mygraph
+
+echo ""
+#TEST 25#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -dfs A 2> tmpfile
+echo "Expected: A,C,D,F,B,E"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 26#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -dfs E 2> tmpfile
+echo "Expected: A,C,D,F,B,E"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 27#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -dfs F 2> tmpfile
+echo "Expected: A,C,D,F,B,E"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo -e "C:A\nC:B\nC:C\nC:D\nC:F\nC:E\nR:A,B,250,2,2\nR:A,E,100,2,2\nR:B,C,70,2,2\nR:B,E,50,2,2\nR:E,D,30,2,2\nR:D,B,30,2,2\nR:C,D,70,2,2" > mygraph
+
+echo ""
+#TEST 28#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -c -bfs A B 2> tmpfile
+echo "Expected: A,250-2,B"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+
+echo ""
+#TEST 29#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -c -bfs A A 2> tmpfile
+echo "Expected: A"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 30#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -c -bfs A C 2> tmpfile
+echo "Expected: A,250-2,B,70-2,C"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 31#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -c -bfs A D 2> tmpfile
+echo "Expected: A,100-2,E,30-2,D"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 32#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -c -bfs E C 2> tmpfile
+echo "Expected: E,30-2,D,30-2,B,70-2,C"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 33#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -c -bfs C B 2> tmpfile
+echo "Expected: C,70-2,D,30-2,B"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 34#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -c -bfs B F 2> tmpfile
+echo "Expected: missing path message"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 35#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -c -bfs F E 2> tmpfile
+echo "Expected: missing path message"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 36#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -c -dijkstra A B 2> tmpfile
+echo "Expected: A,100-2,E,30-2,D,30-2,B"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 37#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -c -dijkstra A A 2> tmpfile
+echo "Expected: A"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+
+echo ""
+#TEST 38#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -c -dijkstra B F 2> tmpfile
+echo "Expected: no path message"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+
+echo ""
+#TEST 39#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -c -dijkstra F E 2> tmpfile
+echo "Expected: no path message"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 40#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -c -dijkstra F E 2> tmpfile
+echo "Expected: no path message"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo -e "C:A\nC:B\nC:C\nC:D\nC:E\nR:A,B,250,2,2\nR:A,E,100,2,2\nR:B,C,70,2,2\nR:B,E,50,2,2\nR:E,D,30,2,2\nR:C,D,70,2,2" > mygraph
+
+echo ""
+#TEST 41#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -c -dfs A 2> tmpfile
+echo "Expected: A,B,E,C,D"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 42#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -c -dfs E 2> tmpfile
+echo "Expected: A,B,C,E,D"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 43#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -c -dfs B 2> tmpfile
+echo "Expected: A,B,E,C,D"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo ""
+#TEST 44#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -c -dfs C 2> tmpfile
+echo "Expected: A,B,E,C,D"
+
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo -e "S:S1,%\nS:S2,%\nS:S3,$\nS:S4,$\nS:S5,%\nT:S1,S1,S\nT:S1,S2,A\nT:S1,S3,R\nT:S2,S2,M\nT:S2,S4,I\nT:S4,S4,T\nT:S5,S4,U\nT:S3,S5,E\nT:S3,S3,M\nT:S3,S1,O\nT:S2,S3,R\nT:S4,S3,R\nT:S5,S2,I" > mygraph
+
+echo -e "AMIT\nREUT\nRMMMEUTTT\nSAMMMRMMM\nRMMEUTTRMMEUTT" > mystring
+
+echo ""
+#TEST 45#
+echo "Loading test number:" $i
+echo  "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -a mystring 2> tmpfile
+echo "EXPECTED: TRUE FOR ALL"
+
+echo -e "AMM\nSAMITRE\nRME\n" > mystring
+
+echo ""
+#TEST 46#
+echo "Loading test number:" $i
+echo  "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -a mystring 2> tmpfile
+echo "EXPECTED: FALSE FOR ALL"
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+
+echo -e "S:S3,$\nS:S1,$\nS:S2,%\nS:S4,$\nS:S5,%\nT:S1,S1,S\nT:S1,S2,A\nT:S1,S3,R\nT:S2,S2,M\nT:S2,S4,I\nT:S4,S4,T\nT:S5,S4,U\nT:S3,S5,E\nT:S3,S3,M\nT:S3,S1,O\nT:S2,S3,R\nT:S4,S3,R\nT:S5,S2,I" > mygraph
+
+
+echo -e "MEIR\nMMOSSAMREUTT\nM\nEUTTTRMMOSS\nOAIROAIR\nMMM\nEIMMMITT" > mystring
+
+echo ""
+#TEST 47#
+echo "Loading test number:" $i
+echo  "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -a mystring 2> tmpfile
+echo "EXPECTED: TRUE FOR ALL"
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+echo -e "MEI\nOSAM\nOAROA\nORMMMEUI\nS\nEUI" > mystring
+
+
+echo ""
+#TEST 48#
+echo "Loading test number:" $i
+echo  "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -a mystring 2> tmpfile
+echo "EXPECTED: FALSE FOR ALL"
+grep -q "All heap blocks were freed" tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
+
+
+rm -f mygraph
+rm -f mystring
+rm -f tmpfile

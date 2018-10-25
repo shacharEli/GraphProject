@@ -1,0 +1,9 @@
+echo -e "V:A\nV:B\nV:C\nV:D\nV:E\nV:F\nE:A,B,100\nE:A,E,50\nE:A,C,2\nE:B,E,10\nE:C,D,20\nE:D,F,20\nE:F,B,10" > mygraph
+
+clear
+#TEST 26#
+i=26
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -dfs E 2> tmpfile
+echo "Expected: A,C,D,F,B,E"

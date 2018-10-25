@@ -1,0 +1,11 @@
+echo -e "S:S1,%\nS:S2,%\nS:S3,$\nS:S4,$\nS:S5,%\nT:S1,S1,S\nT:S1,S2,A\nT:S1,S3,R\nT:S2,S2,M\nT:S2,S4,I\nT:S4,S4,T\nT:S5,S4,U\nT:S3,S5,E\nT:S3,S3,M\nT:S3,S1,O\nT:S2,S3,R\nT:S4,S3,R\nT:S5,S2,I" > mygraph
+
+echo -e "AMIT\r\nREUT\r\nRMMMEUTTT\r\nSAMMMRMMM\r\nRMMEUTTRMMEUTT" > mystring
+
+echo ""
+#TEST 45#
+i=45
+echo "Loading test number:" $i
+echo  "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -a mystring> tmpfile
+echo "EXPECTED: TRUE FOR ALL"

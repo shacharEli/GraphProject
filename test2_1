@@ -1,0 +1,16 @@
+#!/bin/bash
+
+i=1
+
+clear
+## TEST REGULAR GRAPH ##
+echo -e "V:V1\nV:V2\nV:V3\nE:V1,V2,2\nE:V1,V3,7\nE:V2,V3,3" > mygraph
+
+#TEST 1bfs#
+echo "Loading test number:" $i
+echo -n "Your Output:"
+valgrind --leak-check=yes ./ProgramGraph mygraph -r -bfs V1 V3 2> tmpfile
+echo "Expected: V1,V3"
+
+grep -q "All heap blocks were freed"  tmpfile && echo "--> Valgrind check succeeded." || echo "--> Valgrind check failed!!!"
+let "i=$i+1"
